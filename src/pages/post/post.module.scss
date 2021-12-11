@@ -1,1 +1,76 @@
-// TODO
+.container {
+    max-width: 721px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+
+    .logo {
+        width: 100%;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: left;
+    }
+
+    .loadingMessage {
+        color: var(--heading-white);
+    }
+    
+    
+}
+
+.text_content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding-left: 16px;
+    padding-right: 16px;
+
+    .creator_info {
+        margin-bottom: 64px;
+        display: flex;
+        flex-direction: row;
+
+        span {
+            color: var(--info-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin-right: 24px;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            gap: 8px;
+        }
+    }
+
+
+    h1 {
+        color: var(--heading-white);
+        margin-top: 80px;
+        margin-bottom: 24px;
+
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--heading-white);
+        font-family: 'Inter', sans-serif;
+        margin-bottom: 50px;
+    }
+
+    p {
+        color: var(--body-white);
+        margin-bottom: 25px;
+    }
+}
+

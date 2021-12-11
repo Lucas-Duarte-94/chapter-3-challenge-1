@@ -4,4 +4,28 @@
   padding: 0;
 }
 
-// TODO
+:root {
+  --black: #1A1D23;
+  --heading-white: #f8f8f8;
+  --body-white: #d7d7d7;
+  --info-white: #BBBBBB;
+  --highlight-pink: #FF57B2;
+}
+
+body {
+  background: var(--black);
+  
+}
+
+h1, p {
+  font-family: 'Inter', sans-serif;
+}
+
+.loading-message {
+  color: var(--heading-white);
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
