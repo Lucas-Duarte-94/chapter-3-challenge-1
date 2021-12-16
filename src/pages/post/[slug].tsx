@@ -9,11 +9,9 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { FiClock, FiCalendar, FiUser } from 'react-icons/fi';
 import Header from '../../components/Header';
 
-import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { RichText } from 'prismic-dom';
-import { useEffect, useState } from 'react';
-import { queryByTestId } from '@testing-library/dom';
+import { useMemo } from 'react';
 
 interface PostProps {
   post: {
@@ -36,25 +34,32 @@ interface PostProps {
 
 
 export default function Post({ post }: PostProps) {
-  let id = 0;
-  const [estimatedTimeToRead, setEstimatedTimeToRead] = useState(0);
   const router = useRouter();
 
-  useEffect(() => {
-    let bodyText = '';
-    let res = post.data.content.forEach(current => {
-      bodyText += current.heading + " "
-
-      current.body.forEach(element => {
-        bodyText += element.text
-      })
-
-    })
-
-    let Splitted = bodyText.split(' ');
-    
-    setEstimatedTimeToRead(Math.ceil(Splitted.length / 200))
-  }, [])
+  const estimatedTimeToRead = useMemo(() => {
+    if (router.isFallback) {
+      return 0;
+    }
+  
+    const wordsPerMinute = 200;
+  
+    const contentWords = post.data.content.reduce(
+      (summedContents, currentContent) => {
+        const headingWords = currentContent.heading.split(/\s/g).length;
+  
+        const bodyText = RichText.asText(currentContent.body);
+        const bodyWords = bodyText.split(/\s/g).length;
+  
+        return summedContents + headingWords + bodyWords;
+      },
+      0
+    );
+  
+    const minutes = contentWords / wordsPerMinute;
+    const readTime = Math.ceil(minutes);
+  
+    return readTime;
+  }, [post, router.isFallback]);
 
   if (router.isFallback) {
     console.log('passou')
@@ -91,11 +96,10 @@ export default function Post({ post }: PostProps) {
         </div>
 
         {post.data.content.map(e => {
-          id++;
           let body = RichText.asHtml(e.body)
           
           return (
-            <div key={id}>
+            <div key={e.heading}>
               <h2>{e.heading}</h2>
               <div dangerouslySetInnerHTML={{__html: body}}></div>
             </div>
@@ -162,6 +166,6 @@ export const getStaticProps: GetStaticProps = async context => {
     props: {
       post
     },
-    revalidate: 1
+    revalidate: 10
   }
 };
